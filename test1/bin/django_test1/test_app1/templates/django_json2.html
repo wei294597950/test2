@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JavaScript加载JSon数据</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script language="javascript" type="text/javascript">
+//<![CDATA[
+	function contactList(jsons){
+		var table = document.getElementById("contactTable");
+		var arr = eval(jsons);
+		for(var i=0; i<arr.length; i++){
+			var jsonObj = arr[i]; //获取json对象
+			var tr = table.insertRow(table.rows.length);
+			var td1 = tr.insertCell(0);
+
+			td1.align = "center";
+			var td2 = tr.insertCell(1);
+			td2.align = "center";
+			var td3 = tr.insertCell(2);
+			td3.align = "center";
+			tr.setAttribute("id","title");
+			var chkk=document.createElement("input");
+  			chkk.setAttribute("type","checkbox");
+  			chkk.setAttribute("name","test");
+  			tr.appendChild(chkk)
+			td1.innerHTML = jsonObj.id;
+			td2.innerHTML = jsonObj.name;
+			td3.innerHTML = jsonObj.phone;
+			
+		}
+	}
+	$(function(){  
+    $("input[type='button']").click(function() {
+        $("input[name='test']:checked").each(function() { // 遍历选中的checkbox
+            n = $(this).parents("tr").index(); 
+            
+              // 获取checkbox所在行的顺序
+           	
+            $("table#contactTable").find("tr:eq("+n+")").remove();
+        });
+    });
+    $("#btnGetVal").click(function () {  
+        getVal();  
+    }); 
+	});
+
+	function getVal(){      
+    //$('input[name="test"]:checked').each(function(){//遍历每一个名字为nodes的复选框，其中选中的执行函数      
+        //将选中的值添加   
+                 var array = $("table input[type=checkbox]:checked").map(function () {
+		                        return { "id": $.trim($(this).closest("tr").find("td:eq(0)").text()), "name": $.trim($(this).closest("tr").find("td:eq(1)").text()),"phone": $.trim($(this).closest("tr").find("td:eq(2)").text()) };
+			                       }).get();
+ 	$.each(array,function(i,d){		 
+	//alert(d.cell0 + "|" + d.cell1);
+			alert(d["id"])
+			alert(d["name"])
+			alert(typeof(d))
+                })
+    //});
+
+    }  
+
+	function pageInit(){
+		var contact = "[{id:1,name:'张三',phone:'12345'},{id:2,name:'张三',phone:'12345'},{id:3,name:'张三',phone:'12345'}]";  
+
+		contactList(contact);
+	}
+
+//]]
+</script>
+</head>
+<body onload="pageInit();">
+<table width="100%" border="0" cellspacing="0" id="contactTable">
+  <tr  bgcolor="#339933" style="font-size:18px;FONT-WEIGHT:bold;">
+
+    <td align="center">编号</td>
+    <td align="center">姓名</td>
+    <td align="center">电话</td>
+    <td><input type="button" value="删除"></td>
+     <td><button class="btn"  type="button" id="btnGetVal">取值</button> </td> 
+  </tr>
+</table>
+</body>
+</html>

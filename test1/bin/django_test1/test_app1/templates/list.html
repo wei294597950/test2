@@ -1,0 +1,272 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>es语料检索与修改</title>
+
+     <link href=" /static/css/bootstrap.min.css" rel="stylesheet">
+   <script src="/static/js/jquery.min.js"></script>
+   <script src="/static/js/bootstrap.min.js"></script>
+       <script src="/static/js/jquery.cookie.js"></script>
+       <script src="/static/bootstrapvalidator-master/dist/js/bootstrapValidator.min.js"></script>
+    <link href=" /static/bootstrapvalidator-master/dist/css/bootstrapValidator.min.css" rel="stylesheet">
+	<title>更新</title>
+<script language="javascript" type="text/javascript">
+var csrftoken = $.cookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+ var some_data=[{"name":"Column_owner","point":"AKESH2880153908"},{"name":"xuwei","point":"AKESH2880153908"}];
+ $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+ });
+    $(function(){
+     $("#delete").click(function () {
+        $("input[name='test']:checked").each(function() {
+            n = $(this).parents("td").index();
+
+            $("table#contactTable").find("tr:eq("+n+1+")").remove();
+        });
+    });
+
+	});
+
+$(function(){
+	$("#update").click(function(){
+		getVal();
+        $(" input[name='test']:checked").each(function() {
+            n = $(this).parents("tr").index();
+            $("table#contactTable").find("tr:eq("+n+")").remove();
+	});
+});
+	});
+	
+		function getVal(){
+
+        var array = $("table input[type=checkbox]:checked").map(function () {
+                    return { "index": $.trim($(this).closest("tr").find("td:eq(0)").text()), "types": $.trim($(this).closest("tr").find("td:eq(1)").text()),"id": $.trim($(this).closest("tr").find("td:eq(2)").text()),"query":$.trim($(this).closest("tr").find("td:eq(3)").text()),"answer":$.trim($(this).closest("tr").find("td:eq(4)").text())};
+                }).get();
+                  
+
+                $.each(array, function (i, d) {
+
+                })
+               // var clusters=document.getElementById("id_cluster").value;
+    $.ajax({
+    url:"/listing/",
+    data:{"data":JSON.stringify(array),},
+    async:true,
+    dataType:"json",
+    type:"POST",
+    success:function(data){
+    }
+});
+
+    }
+
+
+$(function(){
+	$("#dateup").click(function(){
+                var nums=1;
+});
+	});
+
+$(function(){
+	$("#fetch").click(function(){
+		<!--getVal2();-->
+        var array = $("table input[type=checkbox]:checked").map(function () {
+                    return { "index": $.trim($(this).closest("tr").find("td:eq(0)").text()), "types": $.trim($(this).closest("tr").find("td:eq(1)").text()),"id": $.trim($(this).closest("tr").find("td:eq(2)").text())};
+                }).get();
+
+                  var upone=array[0]["index"];
+		  var uptwo=array[0]["types"];
+		  var upthree=array[0]["id"];
+
+			window.location.href='http://172.17.254.11:8000/update/?index='+upone+'&types='+uptwo+'&id='+upthree;
+});
+	});
+
+		function getVal2(){
+
+        var array = $("table input[type=checkbox]:checked").map(function () {
+                    return { "index": $.trim($(this).closest("tr").find("td:eq(0)").text()), "types": $.trim($(this).closest("tr").find("td:eq(1)").text()),"id": $.trim($(this).closest("tr").find("td:eq(2)").text())};
+                }).get();
+                  
+                 var one=document.getElementsByName("indexs");
+		 one[0].value=array[0]["index"];
+                 var two=document.getElementsByName("typess");
+		 two[0].value=array[0]["types"];
+                 var three=document.getElementsByName("qaid");
+		 three[0].value=array[0]["id"];
+
+                $.each(array, function (i, d) {
+
+                })
+
+    }
+
+$(function () {
+        $('#defaultform').bootstrapValidator({
+
+　　　　　　　　message: 'This value is not valid',
+            　feedbackIcons: {
+                　　　　　　　　valid: 'glyphicon glyphicon-ok',
+                　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+                　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+            　　　　　　　　   },
+            fields: {
+                cluster: {
+                    validators: {
+                        notEmpty: {
+                            message: 'cluster不能为空'
+                        }
+                    }
+		},
+                     query: {
+                    validators: {
+                        notEmpty: {
+                            message: 'query不能为空'
+                        }
+                    }
+                },
+                }
+	    
+
+	});
+});
+</script>
+<style>
+#id_cluster{width:25%;border-radius:5px;height:30px;}
+#id_query{width:25%;border-radius:5px;height:30px;placeholder:"heheeheehehh"}
+#id_answer{width:25%;border-radius:5px;height:30px}
+</style>
+</head>
+<!--<body background: #CAE8EA url(http://www.linuxidc.com/upload/2013_06/13062209025765.jpg) repeat;>
+-->
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+		<div class="navbar-header">
+		<a class="navbar-brand" href="#">AI闲聊干预</a>
+						</div>
+						<div>
+		<ul class="nav navbar-nav">
+			<li><a href="/add_QA/">新增</a></li>
+																			<li class="active"><a href="#">检索</a></li>											       
+																			<li ><a href="/deletelog/">恢复</a></li>											        </ul>
+																				    </div>
+         <div id="header-navbar-collapse" class="navbar-collapse collapse navbar-right">
+                    <ul class="nav navbar-nav">
+
+ <li>
+                            <a href="#" >欢迎， <strong>{{ request.user.username }}</strong>
+                            </a>
+                       </li>
+                        <li>
+                            <a target="_parent" href="/logout/"><strong>注销</strong></a>
+                        </li>
+                    </ul>
+	</div>
+																				    	</div>
+																			</nav>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+	<div>
+		<!--<form class="from-horizontal"  method="post" id="defaultform" action="{% url 'listing' %}">-->
+<form class="from-horizontal"  method="post" id="defaultform">
+    {% csrf_token %}
+<!--	<div class="form-group" >
+	<label for="id_query" class="col-sm-1 control-label">cluster:</label>
+	{{ form.cluster }}				     
+</div>-->
+ 	<div class="form-group">
+	    <label for="id_query" class="col-sm-1 control-label">query:</label>
+	{{ form.query }}				     
+	 </div>
+	 <div class="form-group">
+	     <label for="id_answer" class="col-sm-1 control-label">answer:</label>
+	     {{ form.answer }}  
+	 </div>
+	 <input type="submit" value="查询"class="btn btn-default" name="input_se" id="btn_se" style="margin-left:400px;margin-button:10px;">
+	</form>
+</div>
+<button class="btn btn-default"  type="button" id="update" value="删除" right="100px" style="float:right;margin-bottom:5px;margin-right:20px">删除	</button></form>
+<button class="btn btn-default" id="fetch" style="float:right;margin-bottom:5px;margin-right:20px;">修改</button>
+<table class="table table-striped" id="contactTable">
+	<tr>
+      <th>索引</th>
+  <th>类型</th>
+ <th>id</th>
+ <th>问题</th>
+ <th>答案</th>
+  <th></th>
+</tr>
+{% for contact in contacts  %}
+
+<tr>
+<td >{{ contact.index }}</td>
+<td >{{ contact.type }}</td>
+<td>{{ contact.id }}</td>
+<td>{{ contact.question }}</td>
+<td >{{ contact.answer}}</td>
+<td><input type="checkbox" name="test"></td>
+<!-- <td><input type="button" value="删除" id="delete"></td>-->
+
+</tr>
+{% endfor %}
+</table>	
+<!--<div class="pagination">
+<span class="step-links">
+{% if contacts.has_previous %}
+<a href="?page={{ contacts.previous_page_number }}&csrfmiddlewaretoken=F2dfsBox8uLZLxxJEET0DMDN7Regf07RaDa2PgoJSsCoRnJuuWbM7kMPQBsIF5aJ&cluster={{ cluster }}&index={{ index }}&types={{ types }}&query={{ query }}&answer={{ answer }}">previous</a> 
+	 {% endif %}        <span class="current">
+            Page {{ contacts.number | safe }} of {{ contacts.paginator.num_pages }}.
+        </span>
+ 
+        {% if contacts.has_next %}
+	<a href="?page={{ contacts.next_page_number }}&csrfmiddlewaretoken=F2dfsBox8uLZLxxJEET0DMDN7Regf07RaDa2PgoJSsCoRnJuuWbM7kMPQBsIF5aJ&cluster={{ cluster }}&index={{ index }}&types={{ types }}&query={{ query }}&answer={{ answer }}">next</a>
+		{% endif %}
+    </span>
+</div>-->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+
+        {% if contacts.has_previous %}
+        <li>
+        <a href="?page={{ contacts.previous_page_number }}&csrfmiddlewaretoken=F2dfsBox8uLZLxxJEET0DMDN7Regf07RaDa2PgoJSsCoRnJuuWbM7kMPQBsIF5aJ&cluster={{ cluster }}&index={{ index }}&types={{ types }}&query={{ query }}&answer={{ answer }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        </a>
+        </li>
+        {% endif %}
+
+        {% for pg in contacts.paginator.page_range %}
+        {% if contacts.number == pg %}
+        <li class="active" ><a href="?page={{ pg }}">{{ pg }}</a> </li>
+        {% else %}
+	<!--      <li><a href="?page={{ pg }}">{{ pg }}</a> </li>-->
+	<li>    <a href="?page={{ pg }}&csrfmiddlewaretoken=F2dfsBox8uLZLxxJEET0DMDN7Regf07RaDa2PgoJSsCoRnJuuWbM7kMPQBsIF5aJ&cluster={{ cluster }}&index={{ index }}&types={{ types }}&query={{ query }}&answer={{ answer }}">
+		{{ pg }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+          {% if contacts.has_next %}
+        <li>
+            <a href="?page={{ contacts.next_page_number }}&csrfmiddlewaretoken=F2dfsBox8uLZLxxJEET0DMDN7Regf07RaDa2PgoJSsCoRnJuuWbM7kMPQBsIF5aJ&cluster={{ cluster }}&index={{ index }}&types={{ types }}&query={{ query }}&answer={{ answer }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+</body>
+</html>

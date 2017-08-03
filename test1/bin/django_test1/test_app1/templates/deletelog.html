@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>es语料恢复</title>
+
+     <link href=" /static/css/bootstrap.min.css" rel="stylesheet">
+   <script src="/static/js/jquery.min.js"></script>
+   <script src="/static/js/bootstrap.min.js"></script>
+       <script src="/static/js/jquery.cookie.js"></script>
+	<title>更新</title>
+<script language="javascript" type="text/javascript">
+var csrftoken = $.cookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+ var some_data=[{"name":"Column_owner","point":"AKESH2880153908"},{"name":"xuwei","point":"AKESH2880153908"}];
+ $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+    $(function(){
+     $("#delete").click(function () {
+        $("input[name='test']:checked").each(function() {
+            n = $(this).parents("td").index();
+
+            $("table#contactTable").find("tr:eq("+n+1+")").remove();
+        });
+    });
+
+	});
+
+$(function(){
+	$("#update").click(function(){
+		getVal();
+		alert("恢复成功")
+        $(" input[name='test']:checked").each(function() {
+            n = $(this).parents("tr").index();
+            $("table#contactTable").find("tr:eq("+n+")").remove();
+	});
+});
+	});
+	
+		function getVal(){
+
+        var array = $("table input[type=checkbox]:checked").map(function () {
+                    return { "qaid":$.trim($(this).closest("tr").find("td:eq(3)").text()), "index": $.trim($(this).closest("tr").find("td:eq(1)").text()), "types": $.trim($(this).closest("tr").find("td:eq(2)").text()),"query": $.trim($(this).closest("tr").find("td:eq(4)").text()),"answer": $.trim($(this).closest("tr").find("td:eq(5)").text())};
+                }).get();
+                  
+
+                $.each(array, function (i, d) {
+
+                })
+    $.ajax({
+    url:"/deletelog/",
+    data:{"data":JSON.stringify(array)},
+    async:true,
+    dataType:"json",
+    type:"POST",
+    success:function(data){
+    }
+});
+
+    }
+
+
+$(function(){
+	$("#dateup").click(function(){
+                var nums=1;
+});
+	});
+
+$(function(){
+	$("#fetch").click(function(){
+		getVal2();
+});
+	});
+
+		function getVal2(){
+
+        var array = $("table input[type=checkbox]:checked").map(function () {
+                    return { "index": $.trim($(this).closest("tr").find("td:eq(0)").text()), "types": $.trim($(this).closest("tr").find("td:eq(1)").text()),"id": $.trim($(this).closest("tr").find("td:eq(2)").text())};
+                }).get();
+                  
+                 var one=document.getElementsByName("indexs");
+		 one[0].value=array[0]["index"];
+                 var two=document.getElementsByName("typess");
+		 two[0].value=array[0]["types"];
+                 var three=document.getElementsByName("qaid");
+		 three[0].value=array[0]["id"];
+
+                $.each(array, function (i, d) {
+
+                })
+
+    }
+</script>
+</head>
+<body background: #CAE8EA url(http://www.linuxidc.com/upload/2013_06/13062209025765.jpg) repeat;>
+
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+		<div class="navbar-header">
+		<a class="navbar-brand" href="#">AI闲聊干预</a>
+						</div>
+						<div>
+		<ul class="nav navbar-nav">
+			<li><a href="/add_QA/">新增</a></li>
+																			<li><a href="/listing/">检索</a></li>											       
+																			<li class="active"><a href="/deletelog/">恢复</a></li>											        </ul>
+																				    </div>
+         <div id="header-navbar-collapse" class="navbar-collapse collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                            <li>
+                            <a href="#" >欢迎， <strong>{{ request.user.username }}</strong>
+                            </a>
+                            </li>
+                            <li>
+                            <a target="_parent" href="/logout/"><strong>注销</strong></a>
+                            </li>
+                            </ul>
+	                    </div>										                              </div>
+			</nav>
+
+
+<!--<style>
+div{ display:inline-block;}
+</style>-->
+<!--<div>
+<form id="se" method='GET' class="form-inline">
+{% csrf_token %}<table> 
+{{ form.as_table }}
+</table>
+<p></p>
+<p></p>
+</form>
+</div>
+<div>
+<form id="up" method='POST' class="form-inline">
+{% csrf_token %}<table> 
+{{ form2.as_table }}
+</table>
+</div>-->
+<button class="btn btn-default" id="update" style="float:right;margin-bottom:5px;margin-right:20px;">恢复</button>
+<table class="table table-striped" id="contactTable">
+
+	<th>日期</th>
+      <th>索引</th>
+  <th>类型</th>
+ <th>id</th>
+ <th>问题</th>
+ <th>答案</th>
+  <th></th>
+</tr>
+{% for contact in contacts  %}
+
+<tr>
+	<td>{{ contact.date }}</td>
+<td >{{ contact.index }}</td>
+<td >{{ contact.types }}</td>
+<td>{{ contact.qaid }}</td>
+<td>{{ contact.query }}</td>
+<td >{{ contact.answer}}</td>
+<td><input type="checkbox" name="test"></td>
+<!-- <td><input type="button" value="删除" id="delete"></td>-->
+
+</tr>
+{% endfor %}
+</table>	
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+
+        {% if contacts.has_previous %}
+        <li>
+        <a href="?page={{ contacts.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        </a>
+        </li>
+        {% endif %}
+
+        {% for pg in contacts.paginator.page_range %}
+        {% if contacts.number == pg %}
+        <li class="active" ><a href="?page={{ pg }}">{{ pg }}</a> </li>
+        {% else %}
+        <li><a href="?page={{ pg }}">{{ pg }}</a> </li>
+        {% endif %}
+        {% endfor %}
+
+          {% if contacts.has_next %}
+        <li>
+            <a href="?page={{ contacts.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+</body>
+</html>

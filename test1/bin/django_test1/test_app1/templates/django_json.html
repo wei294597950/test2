@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset="utf-8" />
+<title>JavaScript加载JSon数据</title>
+
+<script language="javascript" type="text/javascript">
+//<![CDATA[
+	function contactList(jsons){
+		var table = document.getElementById("contactTable");
+		var arr = eval(jsons);
+		for(var i=0; i<arr.length; i++){
+			var jsonObj = arr[i]; //获取json对象
+			var tr = table.insertRow(table.rows.length);
+			var td1 = tr.insertCell(0);
+			td1.align = "center";
+			var td2 = tr.insertCell(1);
+			td2.align = "center";
+			var td3 = tr.insertCell(2);
+			td3.align = "center";
+
+			td1.innerHTML = jsonObj.id;
+			td2.innerHTML = jsonObj.name;
+			td3.innerHTML = jsonObj.phone;
+		}
+	}
+
+	function pageInit(){
+		var temp={{ contact | safe }};
+
+		contactList(temp);
+	}
+//]]
+</script>
+</head>
+<body onload="pageInit();">
+<table width="100%" border="0" cellspacing="0" id="contactTable">
+  <tr bgcolor="#339933" style="font-size:18px;FONT-WEIGHT:bold;">
+    <td align="center">编号</td>
+    <td align="center">姓名</td>
+    <td align="center">电话</td>
+  </tr>
+</table>
+</body>
+</html>
